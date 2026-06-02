@@ -1,31 +1,32 @@
-%% Task 2.4 - Load ABB IRB 120 robot and inspect it
+%% Task 2.4 - Load ABB IRB 120 and find end effector pose
 
-% Load the robot model
+% ---- Load robot ----
 myRobot = loadrobot('abbIrb120');
 
-% Show joint and body names
+% ---- Inspect body/joint names ----
 showdetails(myRobot);
 
-% Create configuration with given joint angles
+% ---- Set joint angles ----
 config = homeConfiguration(myRobot);
-config(1).JointPosition = deg2rad(0);    % A1 = 0 deg
-config(2).JointPosition = deg2rad(60);   % A2 = 60 deg
-config(3).JointPosition = deg2rad(-30);  % A3 = -30 deg
-config(4).JointPosition = deg2rad(0);    % A4 = 0 deg
-config(5).JointPosition = deg2rad(45);   % A5 = 45 deg
-config(6).JointPosition = deg2rad(-45);  % A6 = -45 deg
+config(1).JointPosition = deg2rad(0);    % A1
+config(2).JointPosition = deg2rad(60);   % A2
+config(3).JointPosition = deg2rad(-30);  % A3
+config(4).JointPosition = deg2rad(0);    % A4
+config(5).JointPosition = deg2rad(45);   % A5
+config(6).JointPosition = deg2rad(-45);  % A6
 
-% Visualize
+% ---- Visualize ----
 figure;
 show(myRobot, config);
 title('Task 2.4 - ABB IRB 120');
 
-% Get transformation matrix: base -> end effector
+% ---- Transformation matrix: base -> tool (end effector) ----
+% 'tool0' is the end-effector body name in the abbIrb120 model
 T = getTransform(myRobot, config, 'tool0');
-disp('Transformation matrix (base -> end effector):');
+disp('Transformation matrix (base -> tool0):');
 disp(T);
 
-% Get end effector position in base frame
+% ---- Cartesian position ----
 pos = tform2trvec(T);
 disp('End effector position [x, y, z] in meters:');
 disp(pos);
