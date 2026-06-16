@@ -1,20 +1,24 @@
-myRobot = loadrobot('kukaIiwa7');
+%% Task 3.1
+
+myRobot = loadrobot('kukaiiwa7');
+
+
 myIK = inverseKinematics('RigidBodyTree', myRobot);
 
-effectorPosition = [0.4 0.6 0.5];
-effectorPose = trvec2tform(effectorPosition);
+EffectorPosition = [0.4 0.6 0.5];
+
+EffectorPose = trvec2tform(EffectorPosition);
 
 weights = [1 1 1 1 1 1];
+
 initGuess = myRobot.homeConfiguration;
 
-[config, info] = myIK('iiwa_link_ee', effectorPose, weights, initGuess);
+[configSol, info] = myIK('iiwa_link_ee', ...
+    EffectorPose, ...
+    weights, ...
+    initGuess);
 
-figure;
-show(myRobot, config);
-title('Task 3.1 - kukaIiwa7 numerical IK configuration');
+figure
+show(myRobot,configSol)
 
-if info.ExitFlag == 1
-    disp('Solver terminated regularly (local minimum found).');
-else
-    disp('Solver did not terminate regularly.');
-end
+info.ExitFlag
